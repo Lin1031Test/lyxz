@@ -1,3 +1,4 @@
+import datetime
 import os
 import time
 
@@ -5,6 +6,8 @@ import requests
 
 # 全局变量
 students = []
+api_key = "API_KEY"
+api_url = "https://sctapi.ftqq.com/"
 
 # 如果检测到程序在 github actions 内运行，那么读取环境变量中的登录信息
 if os.environ.get('GITHUB_RUN_ID', None):
@@ -18,6 +21,17 @@ if os.environ.get('GITHUB_RUN_ID', None):
             del tmp_students
     except:
         print('err: environment config error')
+
+
+def message(key, title, content, stuID):
+    """
+    微信通知打卡结果
+    """
+    long_content = "%s<br>Time: %s<br>SchoolNumber: %s<br>" % (
+        content, datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f UTC'), stuID)
+    msg_url = "%s%s.send?text=%s&desp=%s" % (api_url, key, title, long_content)
+    requests.get(msg_url)
+
 
 # 实例化session
 session = requests.session()
