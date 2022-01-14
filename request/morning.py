@@ -49,7 +49,7 @@ def report(stuID, password):
         "value": "36",
     }
     res = session.post(url=url, data=data, headers=headers)
-    if res.text:
+    if res.json():
         return True
 
 def main():
@@ -59,8 +59,8 @@ def main():
         stuID = list_temp[0]
         password = list_temp[1]
         report(stuID, password)
-        del (stuID)
         print(stuID[-3:]+"打卡完成！")
+        del (stuID)
         time.sleep(2)
     print("打卡任务全部完成！")
 
